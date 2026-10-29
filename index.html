@@ -574,7 +574,7 @@ addEventListener('keyup',e=>{if(KL.includes(e.code)){ptrs.delete('kL');release('
 function togglePause(){if(state!='play'&&state!='bonus')return;paused=!paused;$('pause').textContent=paused?'▶':'⏸';if(!paused){lastT=performance.now()}}
 $('pause').onclick=e=>{e.stopPropagation();togglePause()};
 window.musicPaused=()=>paused;
-$('help').onclick=e=>{e.stopPropagation();if(state=='play'&&!paused)togglePause();panel(TABLE.help+'<h3>Controls</h3><p>📱 Tap/hold the <b>left</b> half for the left flipper, the <b>right</b> half for the right flipper. When a ball sits in the shooter lane, press on the right side and <b>pull down</b> (or hold) to set power, then let go. <b>Swipe up</b> to nudge — three hard nudges = TILT.<br>⌨️ Z / ← left, / / → right, Space / ↓ plunger, ↑ nudge, P pause, M mute.</p><h3>Scoring</h3><p>Top lanes raise the bonus multiplier (flippers rotate lit lanes). Drop target banks light Lock — lock 3 balls for Multiball, then shoot ramps & orbits for Jackpots. Ramps/orbits back-to-back = Combos. Ball Save is on for the first seconds of each ball. Kickback (KB) saves the left outlane.</p>')};
+$('help').onclick=e=>{e.stopPropagation();if(state=='play'&&!paused)togglePause();panel(TABLE.help+'<h3>Controls</h3><p>📱 Tap/hold the <b>left</b> half for the left flipper, the <b>right</b> half for the right flipper. When a ball sits in the shooter lane, press on the right side and <b>pull down</b> (or hold) to set power, then let go. <b>Swipe up</b> to nudge — three hard nudges = TILT.<br>⌨️ Z / ← left, / / → right, Space / ↓ plunger, ↑ nudge, P pause, M mute.<br>🎮 Controller: LB / ◀ / X left flipper, RB / ▶ / B right flipper, hold A (or ▼) to pull the plunger and let go to launch, Y / ▲ nudge, Start pause, Select mute.</p><h3>Scoring</h3><p>Top lanes raise the bonus multiplier (flippers rotate lit lanes). Drop target banks light Lock — lock 3 balls for Multiball, then shoot ramps & orbits for Jackpots. Ramps/orbits back-to-back = Combos. Ball Save is on for the first seconds of each ball. Kickback (KB) saves the left outlane.</p>')};
 // ---------- loop
 function frame(now){requestAnimationFrame(frame);let dt=Math.min(.05,(now-lastT)/1000||0);lastT=now;if(paused||panelOpen){render(1);return}
  tNow+=dt;
@@ -882,4 +882,16 @@ window.__unlock={unlocked:un,sample:window.__SAMPLE||null,get badge(){return las
 #palbList li{min-height:30px;height:auto!important;font-size:16px!important}
 .tb{width:46px!important;height:46px!important}#mute{right:55px!important}#help{right:6px!important;top:calc(55px + env(safe-area-inset-top))!important}
 </style>
+<!-- gamepad:start -->
+<script src="gamepad.js?v=1"></script>
+<script>
+GamepadSupport.init({
+ keys:{left:'ArrowLeft',lb:'ArrowLeft',lt:'ArrowLeft',x:'ArrowLeft',right:'ArrowRight',rb:'ArrowRight',rt:'ArrowRight',b:'ArrowRight',a:'Space',down:'Space',up:'ArrowUp',y:'ArrowUp',start:'KeyP',back:'KeyM'},
+ repeat:false,
+ ignoreSel:'#dock,#mute,#pause,#help,#inst,#ios,.tb',
+ backSel:'#pclose',
+ menu:function(){return !!document.querySelector('#palbOv.on,#smpLock.on')||panelOpen;}
+});
+</script>
+<!-- gamepad:end -->
 </body></html>
